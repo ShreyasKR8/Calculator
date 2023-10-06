@@ -3,3 +3,41 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+header {
+    height: 100px;
+    padding: 30px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.calculator-body {
+    border: 3px solid red;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    margin-left: 40%;
+}
+
+.calculator-display {
+
+    height: 60px;
+    width: 300px;
+    margin: 5px;
+    padding: 12px;
+    font-size: 28px;
+    border: 3px solid black;
+}
+
+.buttons-section {
+    margin: 5px;
+    border: 3px solid black;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+button {
+    margin: 5px;
+    padding: 20px;
+}
