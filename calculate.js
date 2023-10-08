@@ -2,8 +2,6 @@ let operandA = 0;
 let operandB = 0;
 const buttons = document.querySelectorAll("button");
 const displayScreen = document.querySelector(".calculator-display");
-let str = "wer"
-console.log(str.slice(0, -1));
 function calculate(expression)
 {
     if(expression.includes('+'))
@@ -92,15 +90,19 @@ function modulo(expression)
 
 buttons.forEach(button => {
     button.addEventListener("click", (e) => {
-        if(button.textContent == "AC")
+        if(button.textContent === "DEL")
+        {
+            displayScreen.textContent = displayScreen.textContent.slice(0, -1);
+        }
+        else if(button.textContent === "AC")
             displayScreen.textContent = "";
-        else if(button.textContent == "+/-")
-        displayScreen.textContent += "-";
-    else if(button.textContent != "=")
-    displayScreen.textContent += button.textContent;
-    else if(button.textContent === "=")
-    {
-        displayScreen.textContent = calculate(displayScreen.textContent);
-    }
+        else if(button.textContent === "+/-")
+            displayScreen.textContent += "-";
+        else if(button.textContent !== "=")
+            displayScreen.textContent += button.textContent;
+        else if(button.textContent === "=")
+        {
+            displayScreen.textContent = calculate(displayScreen.textContent);
+        }
     })
 });
