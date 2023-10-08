@@ -2,6 +2,8 @@ let operandA = 0;
 let operandB = 0;
 const buttons = document.querySelectorAll("button");
 const displayScreen = document.querySelector(".calculator-display");
+let str = "5689+56";
+console.log(str.slice(1))
 function calculate(expression)
 {
     if(expression.includes('+'))
@@ -11,22 +13,21 @@ function calculate(expression)
     
     if(expression.includes('-'))
     {
-        const operatorIndex = expression.indexOf('-');
-        // if(operatorIndex === 0)
-        // {
-        //     operandA = -parseInt(expression.slice(0, operatorIndex));
-        //     // operatorIndex = expression.lastIndexOf('-');
-        //     operandB = parseInt(expression.slice(operatorIndex));
-        //     // let result = subtract(operandA, operandB);
-        //     // return
-        // }
-        // operatorIndex = expression.lastIndexOf('-');
-        operandA = parseInt(expression.slice(0, operatorIndex));
-        operandB = parseInt(expression.slice(-operatorIndex));
-        // operandB = parseInt(expression.slice(-(operatorIndex + 1)));
-        let result = subtract(operandA, operandB);
-        return result;
-        
+        let operatorIndex = expression.indexOf('-');
+        if(operatorIndex != 0)
+        {
+            operandA = expression.slice(0, operatorIndex);
+            operandB = expression.slice(operatorIndex + 1, expression.length);
+            return subtract(operandA, operandB);
+        }
+        // Negative number at the beginning of the expression
+        operandA = parseFloat(expression);
+        if(expression.slice(1).includes('-'))
+        {
+            operatorIndex = expression.lastIndexOf('-')
+            operandB = expression.slice(operatorIndex + 1, expression.length);
+            return subtract(operandA, operandB);
+        }  
     }
 
     if(expression.includes('*'))
@@ -47,42 +48,54 @@ function calculate(expression)
 
 function add(expression)
 {
-    const operatorIndex = expression.lastIndexOf('+')
-    operandA = parseInt(expression.slice(0, operatorIndex));
-    operandB = parseInt(expression.slice(-(operatorIndex + 1)));
+    const operatorIndex = expression.indexOf('+')
+    if(expression.includes("."))
+    {
+        operandA = parseFloat(expression.slice(0, operatorIndex));
+        operandB = parseFloat(expression.slice(operatorIndex + 1, expression.length));
+    }
+    else
+    {
+        operandA = parseInt(expression.slice(0, operatorIndex));
+        operandB = parseInt(expression.slice(operatorIndex + 1, expression.length));
+    }
     return (operandA + operandB);
 }
 
 function subtract(operandA, operandB)
 {
+    
     return (operandA - operandB);
 }
 
 function multiply(expression)
 {
-    const operatorIndex = expression.lastIndexOf('*')
-    operandA = parseInt(expression.slice(0, operatorIndex));
-    operandB = parseInt(expression.slice(-operatorIndex));
+    const operatorIndex = expression.indexOf('*')
+    operandA = expression.slice(0, operatorIndex);
+    operandB = expression.slice(operatorIndex + 1, expression.length);
     return (operandA * operandB);
 }
 
 function divide(expression)
 {
-    const operatorIndex = expression.lastIndexOf('/')
-    operandA = parseInt(expression.slice(0, operatorIndex));
-    operandB = parseInt(expression.slice(-operatorIndex));
-    if(operandA === 0)
+    const operatorIndex = expression.indexOf('/')
+    operandA = expression.slice(0, operatorIndex);
+    operandB = expression.slice(operatorIndex+ 1, expression.length);
+    if(operandA === "0")
         return "0, I mean its alright"
-    if(operandB === 0)
+    if(operandB === "0")
+    {
         return "dude seriously??";
+        
+    }
     return (operandA / operandB);
 }
 
 function modulo(expression)
 {
-    const operatorIndex = expression.lastIndexOf('%')
-    operandA = parseInt(expression.slice(0, operatorIndex));
-    operandB = parseInt(expression.slice(-operatorIndex));
+    const operatorIndex = expression.indexOf('%')
+    operandA = expression.slice(0, operatorIndex);
+    operandB = expression.slice(operatorIndex + 1, expression.length);
     if(operandB === 0)
         return "dude seriously??";
     return (operandA % operandB);
