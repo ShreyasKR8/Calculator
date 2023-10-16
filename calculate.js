@@ -2,8 +2,7 @@ let operandA = 0;
 let operandB = 0;
 const buttons = document.querySelectorAll("button");
 const displayScreen = document.querySelector(".calculator-display");
-let str = "5689+56";
-console.log(str.slice(1))
+
 function calculate(expression)
 {
     if(expression.includes('+'))
@@ -98,7 +97,10 @@ function modulo(expression)
     operandB = expression.slice(operatorIndex + 1, expression.length);
     if(operandB === 0)
         return "dude seriously??";
-    return (operandA % operandB);
+
+    if ( operandA < 0 )
+        operandA = operandB - Math.abs(operandA) % operandB;
+    return operandA % operandB;
 }
 
 buttons.forEach(button => {
