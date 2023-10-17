@@ -1,5 +1,6 @@
 let operandA = 0;
 let operandB = 0;
+let operatorCount = 0;
 const buttons = document.querySelectorAll("button");
 const displayScreen = document.querySelector(".calculator-display");
 
@@ -103,21 +104,56 @@ function modulo(expression)
     return operandA % operandB;
 }
 
+
+let operandCount = 0;
+let pressedEquals = false;
 buttons.forEach(button => {
     button.addEventListener("click", (e) => {
+        if(pressedEquals) // If user clicked equals in previous click, Clear screen for current calc
+        {
+            displayScreen.textContent = "";
+            pressedEquals = false;
+        }
+        if(isNaN(parseInt(e.target.innerHTML)))
+        {
+            operatorCount++;
+        }
+        else
+        {
+            operandCount++;
+        }
         if(button.textContent === "DEL")
         {
             displayScreen.textContent = displayScreen.textContent.slice(0, -1);
         }
         else if(button.textContent === "AC")
+        {
             displayScreen.textContent = "";
+        }
         else if(button.textContent === "+/-")
+        {
             displayScreen.textContent += "-";
-        else if(button.textContent !== "=")
+        }
+        else if(button.textContent !== "=" )
+        {
             displayScreen.textContent += button.textContent;
-        else if(button.textContent === "=")
+        }
+        
+        if(button.textContent === "=")
         {
             displayScreen.textContent = calculate(displayScreen.textContent);
+            pressedEquals = true;
+        }
+        else if(operandCount === 2 && (operatorCount === 2 || operatorCount === 3)) //To evaluate 2 operands at a time
+        {
+            let secOp = displayScreen.textContent.slice(-1); //store the last dangling operator the user entered
+            displayScreen.textContent = calculate(displayScreen.textContent.slice(0, -1)); //remove the last dangling operator from expression
+            displayScreen.textContent += secOp; //Add the dangling operator after evaluation
+            operandCount = 1;
+            operatorCount = 1;
         }
     })
 });
+
+// = not working and ac and DEL not working
+//handle * / + shouldnt be allowed to print first
