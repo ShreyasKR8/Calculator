@@ -109,6 +109,10 @@ let operandCount = 0;
 let pressedEquals = false;
 buttons.forEach(button => {
     button.addEventListener("click", (e) => {
+        if(displayScreen.textContent.length === 0 && /[+*/%]/.test(button.textContent))
+        {
+            return;
+        }
         if(pressedEquals) // If user clicked equals in previous click, Clear screen for current calc
         {
             displayScreen.textContent = "";
@@ -144,7 +148,7 @@ buttons.forEach(button => {
             displayScreen.textContent = calculate(displayScreen.textContent);
             pressedEquals = true;
         }
-        else if(operandCount === 2 && (operatorCount === 2 || operatorCount === 3)) //To evaluate 2 operands at a time
+        else if(operandCount > 1 && (operatorCount === 2 || operatorCount === 3)) //To evaluate 2 operands at a time
         {
             let secOp = displayScreen.textContent.slice(-1); //store the last dangling operator the user entered
             displayScreen.textContent = calculate(displayScreen.textContent.slice(0, -1)); //remove the last dangling operator from expression
@@ -155,5 +159,5 @@ buttons.forEach(button => {
     })
 });
 
-// = not working and ac and DEL not working
-//handle * / + shouldnt be allowed to print first
+//handle * / + % together
+//fix % calcs
