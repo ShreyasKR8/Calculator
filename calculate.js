@@ -3,8 +3,11 @@ let operandB = 0;
 let operatorCount = 0;
 let canPressDot = true;
 let operator1 = "";
+const operatorRegex = /[+*/%]/;
 const buttons = document.querySelectorAll("button");
 const numberButtons = document.querySelectorAll(".numbers");
+const operatorButtons = document.querySelectorAll(".operator");
+console.log(operatorButtons);
 const moduloButton = document.querySelector(".modulus");
 const divideButton = document.querySelector(".division");
 const multiplyButton = document.querySelector(".product");
@@ -14,6 +17,7 @@ const equalsButton = document.querySelector(".equals");
 const dotButton = document.querySelector(".dot");
 const delButton = document.querySelector(".del");
 const clearButton = document.querySelector(".clear");
+const operatorArray = ["+", "-", "*", "/", "%"];
 
 const displayScreen = document.querySelector(".calculator-display");
 displayScreen.textContent = "";
@@ -76,10 +80,23 @@ function add(expression)
     return (operandA + operandB);
 }
 
-function subtract(operandA, operandB)
+function subtract(expression)
 {
-    
-    return (operandA - operandB);
+    let operatorIndex = expression.indexOf('-');
+        if(operatorIndex != 0)
+        {
+            operandA = expression.slice(0, operatorIndex);
+            operandB = expression.slice(operatorIndex + 1, expression.length);
+            return (operandA - operandB);
+        }
+        // Negative number at the beginning of the expression
+        operandA = parseFloat(expression);
+        if(expression.slice(1).includes('-'))
+        {
+            operatorIndex = expression.lastIndexOf('-')
+            operandB = expression.slice(operatorIndex + 1, expression.length);
+            return (operandA - operandB);
+        } 
 }
 
 function multiply(expression)
@@ -173,11 +190,20 @@ let pressedEquals = false;
 //     })
 // });
 
-function doCalculate(expression)
+function doCalculate(expression, calcOperator)
 {
-    switch(operator1)
+    switch(calcOperator)
     {
-        case "+": displayScreen.textContent = add(expression);
+        case "+":displayScreen.textContent = add(expression);
+            break;
+        case "-" : displayScreen.textContent = subtract(expression);
+            break; 
+        case "*" : displayScreen.textContent = multiply(expression);
+            break;
+        case "/" : displayScreen.textContent = divide(expression);
+            break;
+        case "%" : displayScreen.textContent = modulo(expression);
+            break;
         default: console.log("none");
     }
 }
@@ -199,47 +225,76 @@ dotButton.addEventListener("click", function(evt)  {
 })
 
 moduloButton.addEventListener("click", function(evt)  {
+    if(displayScreen.textContent.length === 0)
+    {
+        return;
+    }
     const operator = this.textContent;
     displayScreen.textContent += operator;
+    operator1 = "%";
     canPressDot = true; //can press dot after this as it will be a new number
 })
 
-divideButton.addEventListener("click", function(evt)  {
+divideButton.addEventListener("click", function(evt) {
+    if(displayScreen.textContent.length === 0)
+    {
+        return;
+    }
     const operator = this.textContent;
     displayScreen.textContent += operator;
+    operator1 = "/";
     canPressDot = true;
 })
 
 multiplyButton.addEventListener("click", function(evt) {
+    if(displayScreen.textContent.length === 0)
+    {
+        return;
+    }
+    canPressDot = true;
     const operator = this.textContent;
     displayScreen.textContent += operator;
-    canPressDot = true;
+    operator1 = "*";
 })
 
 subtractButton.addEventListener("click", function(evt) {
     const operator = this.textContent;
     displayScreen.textContent += operator;
     canPressDot = true;
+    operator1 = "-";
 })
 
 addButton.addEventListener("click", function(evt) {
+    if(displayScreen.textContent.length === 0)
+    {
+        return;
+    }
     canPressDot = true;
     const operator = this.textContent;
     displayScreen.textContent += operator;
-    operator1 += "+";
+    operator1 = "+";
 })
 
 equalsButton.addEventListener("click", function(evt) {
-    // const operator = this.textContent;
-    // displayScreen.textContent += operator;
+    if(displayScreen.textContent.length === 0)
+    {
+        return;
+    }
     canPressDot = true;
-    doCalculate(displayScreen.textContent);
+    let calcOperator = operator1;
+    doCalculate(displayScreen.textContent, calcOperator);
 })
 
 delButton.addEventListener("click", function(evt) {
     if(!canPressDot && displayScreen.textContent.slice(-1) === ".") 
     {
         canPressDot = true; // if the deleted element is dot, set canPressDot to true
+    }
+    // if the deleted is an operator and canPressDot was set to true by any operator's event listeners then-there could be a better soln though
+    if(canPressDot && operatorRegex.test(displayScreen.textContent.slice(-1))) 
+    {
+        console.log("yeah");    
+        canPressDot = false; 
     }
     displayScreen.textContent = displayScreen.textContent.slice(0, -1);
 })
@@ -249,6 +304,7 @@ clearButton.addEventListener("click", function(evt) {
     canPressDot = true;
 })
 
-//handle * / + % together
-//handle dot after operator deletion
-//add done, do others
+//handle not allowing * / + % together
+//handle dot after operator deletion - fixed
+//rounding off problem
+//handle calculating on chain calcs
