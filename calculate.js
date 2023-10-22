@@ -1,6 +1,8 @@
 let operandA = 0;
 let operandB = 0;
 let operatorCount = 0;
+let operandCount = 0;
+let pressedEquals = false;
 let canPressDot = true;
 let operator1 = "";
 const operatorRegex = /[+*/%]/;
@@ -135,9 +137,6 @@ function modulo(expression)
     return operandA % operandB;
 }
 
-
-let operandCount = 0;
-let pressedEquals = false;
 // buttons.forEach(button => {
 //     button.addEventListener("click", (e) => {
 //         if(displayScreen.textContent.length === 0 && /[+*/%]/.test(button.textContent))
@@ -212,6 +211,7 @@ numberButtons.forEach(numButton => {
     numButton.addEventListener("click", function(evt)  {
         const number = this.textContent;
         displayScreen.textContent += number;
+        operandCount++;
     })
 })
 
@@ -225,28 +225,47 @@ dotButton.addEventListener("click", function(evt)  {
 })
 
 moduloButton.addEventListener("click", function(evt)  {
+    operatorCount++;
     if(displayScreen.textContent.length === 0)
     {
         return;
     }
     const operator = this.textContent;
     displayScreen.textContent += operator;
+    if(operatorCount === 2 && operandCount === 2) //try to call a seperate equals function or not maybe
+    {
+        let secOp = displayScreen.textContent.slice(-1); //store the last dangling operator the user entered
+        doCalculate(displayScreen.textContent.slice(0, -1), operator1); //remove the last dangling operator from expression
+        displayScreen.textContent += secOp; //Add the dangling operator after evaluation
+        operandCount = 1;
+        operatorCount = 1;
+    }
     operator1 = "%";
     canPressDot = true; //can press dot after this as it will be a new number
 })
 
 divideButton.addEventListener("click", function(evt) {
+    operatorCount++;
     if(displayScreen.textContent.length === 0)
     {
         return;
     }
     const operator = this.textContent;
     displayScreen.textContent += operator;
+    if(operatorCount === 2 && operandCount === 2) //try to call a seperate equals function or not maybe
+    {
+        let secOp = displayScreen.textContent.slice(-1); //store the last dangling operator the user entered
+        doCalculate(displayScreen.textContent.slice(0, -1), operator1); //remove the last dangling operator from expression
+        displayScreen.textContent += secOp; //Add the dangling operator after evaluation
+        operandCount = 1;
+        operatorCount = 1;
+    }
     operator1 = "/";
     canPressDot = true;
 })
 
 multiplyButton.addEventListener("click", function(evt) {
+    operatorCount++;
     if(displayScreen.textContent.length === 0)
     {
         return;
@@ -254,17 +273,35 @@ multiplyButton.addEventListener("click", function(evt) {
     canPressDot = true;
     const operator = this.textContent;
     displayScreen.textContent += operator;
+    if(operatorCount === 2 && operandCount === 2) //try to call a seperate equals function or not maybe
+    {
+        let secOp = displayScreen.textContent.slice(-1); //store the last dangling operator the user entered
+        doCalculate(displayScreen.textContent.slice(0, -1), operator1); //remove the last dangling operator from expression
+        displayScreen.textContent += secOp; //Add the dangling operator after evaluation
+        operandCount = 1;
+        operatorCount = 1;
+    }
     operator1 = "*";
 })
 
 subtractButton.addEventListener("click", function(evt) {
+    operatorCount++;
     const operator = this.textContent;
     displayScreen.textContent += operator;
     canPressDot = true;
+    if(operatorCount === 2 && operandCount === 2) //try to call a seperate equals function or not maybe
+    {
+        let secOp = displayScreen.textContent.slice(-1); //store the last dangling operator the user entered
+        doCalculate(displayScreen.textContent.slice(0, -1), operator1); //remove the last dangling operator from expression
+        displayScreen.textContent += secOp; //Add the dangling operator after evaluation
+        operandCount = 1;
+        operatorCount = 1;
+    }
     operator1 = "-";
 })
 
 addButton.addEventListener("click", function(evt) {
+    operatorCount++;
     if(displayScreen.textContent.length === 0)
     {
         return;
@@ -272,6 +309,14 @@ addButton.addEventListener("click", function(evt) {
     canPressDot = true;
     const operator = this.textContent;
     displayScreen.textContent += operator;
+    if(operatorCount === 2 && operandCount === 2) //try to call a seperate equals function or not maybe
+    {
+        let secOp = displayScreen.textContent.slice(-1); //store the last dangling operator the user entered
+        doCalculate(displayScreen.textContent.slice(0, -1), operator1); //remove the last dangling operator from expression
+        displayScreen.textContent += secOp; //Add the dangling operator after evaluation
+        operandCount = 1;
+        operatorCount = 1;
+    }
     operator1 = "+";
 })
 
@@ -302,9 +347,10 @@ delButton.addEventListener("click", function(evt) {
 clearButton.addEventListener("click", function(evt) {
     displayScreen.textContent = "";
     canPressDot = true;
+    operatorCount = 0;
+    operandCount = 0;
 })
 
 //handle not allowing * / + % together
-//handle dot after operator deletion - fixed
 //rounding off problem
-//handle calculating on chain calcs
+//handle calculating on chain calcs edit: almost but not yet
