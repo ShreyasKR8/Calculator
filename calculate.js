@@ -5,7 +5,7 @@ let operandCount = 0;
 let pressedEquals = false;
 let canPressDot = true;
 let operator1 = "";
-const operatorRegex = /[+*/%]/;
+const operatorRegex = /[+*-/%]/;
 const buttons = document.querySelectorAll("button");
 const numberButtons = document.querySelectorAll(".numbers");
 const operatorButtons = document.querySelectorAll(".operator");
@@ -19,7 +19,7 @@ const equalsButton = document.querySelector(".equals");
 const dotButton = document.querySelector(".dot");
 const delButton = document.querySelector(".del");
 const clearButton = document.querySelector(".clear");
-const operatorArray = ["+", "-", "*", "/", "%"];
+const signButton = document.querySelector(".sign");
 
 const displayScreen = document.querySelector(".calculator-display");
 displayScreen.textContent = "";
@@ -137,73 +137,23 @@ function modulo(expression)
     return operandA % operandB;
 }
 
-// buttons.forEach(button => {
-//     button.addEventListener("click", (e) => {
-//         if(displayScreen.textContent.length === 0 && /[+*/%]/.test(button.textContent))
-//         {
-//             return;
-//         }
-//         if(pressedEquals) // If user clicked equals in previous click, Clear screen for current calc
-//         {
-//             displayScreen.textContent = "";
-//             pressedEquals = false;
-//         }
-//         if(isNaN(parseInt(e.target.innerHTML)))
-//         {
-//             operatorCount++;
-//         }
-//         else
-//         {
-//             operandCount++;
-//         }
-//         if(button.textContent === "DEL")
-//         {
-//             displayScreen.textContent = displayScreen.textContent.slice(0, -1);
-//         }
-//         else if(button.textContent === "AC")
-//         {
-//             displayScreen.textContent = "";
-//         }
-//         else if(button.textContent === "+/-")
-//         {
-//             displayScreen.textContent += "-";
-//         }
-//         else if(button.textContent !== "=" )
-//         {
-//             displayScreen.textContent += button.textContent;
-//         }
-        
-//         // if(button.textContent === "=")
-//         // {
-//         //     displayScreen.textContent = calculate(displayScreen.textContent);
-//         //     pressedEquals = true;
-//         // }
-//         // else if(operandCount > 1 && (operatorCount === 2 || operatorCount === 3)) //To evaluate 2 operands at a time
-//         // {
-//         //     let secOp = displayScreen.textContent.slice(-1); //store the last dangling operator the user entered
-//         //     displayScreen.textContent = calculate(displayScreen.textContent.slice(0, -1)); //remove the last dangling operator from expression
-//         //     displayScreen.textContent += secOp; //Add the dangling operator after evaluation
-//         //     operandCount = 1;
-//         //     operatorCount = 1;
-//         // }
-//     })
-// });
-
 function doCalculate(expression, calcOperator)
 {
+    expression = (expression.replace(/\(/g, ""));
+    expression = expression.replace(/\)/g, "");
     switch(calcOperator)
     {
-        case "+":displayScreen.textContent = add(expression);
+        case "+":displayScreen.textContent = add(bracketsFreeExpression);
             break;
         case "-" : displayScreen.textContent = subtract(expression);
             break; 
-        case "*" : displayScreen.textContent = multiply(expression);
+        case "*" : displayScreen.textContent = multiply(bracketsFreeExpression);
             break;
-        case "/" : displayScreen.textContent = divide(expression);
+        case "/" : displayScreen.textContent = divide(bracketsFreeExpression);
             break;
-        case "%" : displayScreen.textContent = modulo(expression);
+        case "%" : displayScreen.textContent = modulo(bracketsFreeExpression);
             break;
-        default: console.log("none");
+        default: displayScreen.textContent = "Invalid";
     }
 }
 
@@ -213,6 +163,10 @@ numberButtons.forEach(numButton => {
         displayScreen.textContent += number;
         operandCount++;
     })
+})
+
+signButton.addEventListener("click", function(evt)  {
+    displayScreen.textContent += "(-)";
 })
 
 dotButton.addEventListener("click", function(evt)  {
@@ -232,7 +186,7 @@ moduloButton.addEventListener("click", function(evt)  {
     }
     const operator = this.textContent;
     displayScreen.textContent += operator;
-    if(operatorCount === 2 && operandCount === 2) //try to call a seperate equals function or not maybe
+    if(operatorCount === 2) //try to call a seperate equals function or not maybe
     {
         let secOp = displayScreen.textContent.slice(-1); //store the last dangling operator the user entered
         doCalculate(displayScreen.textContent.slice(0, -1), operator1); //remove the last dangling operator from expression
@@ -252,7 +206,7 @@ divideButton.addEventListener("click", function(evt) {
     }
     const operator = this.textContent;
     displayScreen.textContent += operator;
-    if(operatorCount === 2 && operandCount === 2) //try to call a seperate equals function or not maybe
+    if(operatorCount === 2) //try to call a seperate equals function or not maybe
     {
         let secOp = displayScreen.textContent.slice(-1); //store the last dangling operator the user entered
         doCalculate(displayScreen.textContent.slice(0, -1), operator1); //remove the last dangling operator from expression
@@ -273,7 +227,7 @@ multiplyButton.addEventListener("click", function(evt) {
     canPressDot = true;
     const operator = this.textContent;
     displayScreen.textContent += operator;
-    if(operatorCount === 2 && operandCount === 2) //try to call a seperate equals function or not maybe
+    if(operatorCount === 2) //try to call a seperate equals function or not maybe
     {
         let secOp = displayScreen.textContent.slice(-1); //store the last dangling operator the user entered
         doCalculate(displayScreen.textContent.slice(0, -1), operator1); //remove the last dangling operator from expression
@@ -285,11 +239,16 @@ multiplyButton.addEventListener("click", function(evt) {
 })
 
 subtractButton.addEventListener("click", function(evt) {
-    operatorCount++;
+    if(displayScreen.textContent.length === 0)
+    {
+        return;
+    }
+    if(displayScreen.textContent.length !== 0) // "-" number sign shouldnt be considered for operatorCount maybe not required since (-)
+        operatorCount++;
     const operator = this.textContent;
     displayScreen.textContent += operator;
     canPressDot = true;
-    if(operatorCount === 2 && operandCount === 2) //try to call a seperate equals function or not maybe
+    if(operatorCount === 2) //try to call a seperate equals function or not maybe
     {
         let secOp = displayScreen.textContent.slice(-1); //store the last dangling operator the user entered
         doCalculate(displayScreen.textContent.slice(0, -1), operator1); //remove the last dangling operator from expression
@@ -309,7 +268,7 @@ addButton.addEventListener("click", function(evt) {
     canPressDot = true;
     const operator = this.textContent;
     displayScreen.textContent += operator;
-    if(operatorCount === 2 && operandCount === 2) //try to call a seperate equals function or not maybe
+    if(operatorCount === 2) //try to call a seperate equals function or not maybe
     {
         let secOp = displayScreen.textContent.slice(-1); //store the last dangling operator the user entered
         doCalculate(displayScreen.textContent.slice(0, -1), operator1); //remove the last dangling operator from expression
@@ -331,15 +290,19 @@ equalsButton.addEventListener("click", function(evt) {
 })
 
 delButton.addEventListener("click", function(evt) {
-    if(!canPressDot && displayScreen.textContent.slice(-1) === ".") 
+    let deletedItem = displayScreen.textContent.slice(-1);
+    if(!canPressDot && deletedItem === ".") 
     {
         canPressDot = true; // if the deleted element is dot, set canPressDot to true
     }
     // if the deleted is an operator and canPressDot was set to true by any operator's event listeners then-there could be a better soln though
-    if(canPressDot && operatorRegex.test(displayScreen.textContent.slice(-1))) 
-    {
-        console.log("yeah");    
+    if(canPressDot && operatorRegex.test(deletedItem)) 
+    {   
         canPressDot = false; 
+    }
+    if(operatorRegex.test(deletedItem))
+    {
+        operatorCount--;
     }
     displayScreen.textContent = displayScreen.textContent.slice(0, -1);
 })
@@ -353,4 +316,3 @@ clearButton.addEventListener("click", function(evt) {
 
 //handle not allowing * / + % together
 //rounding off problem
-//handle calculating on chain calcs edit: almost but not yet
