@@ -9,7 +9,6 @@ const operatorRegex = /[+*-/%]/;
 const buttons = document.querySelectorAll("button");
 const numberButtons = document.querySelectorAll(".numbers");
 const operatorButtons = document.querySelectorAll(".operator");
-console.log(operatorButtons);
 const moduloButton = document.querySelector(".modulus");
 const divideButton = document.querySelector(".division");
 const multiplyButton = document.querySelector(".product");
@@ -20,7 +19,6 @@ const dotButton = document.querySelector(".dot");
 const delButton = document.querySelector(".del");
 const clearButton = document.querySelector(".clear");
 const signButton = document.querySelector(".sign");
-
 const displayScreen = document.querySelector(".calculator-display");
 displayScreen.textContent = "";
 
@@ -139,19 +137,19 @@ function modulo(expression)
 
 function doCalculate(expression, calcOperator)
 {
-    expression = (expression.replace(/\(/g, ""));
+    expression = (expression.replace(/\(/g, "")); //remove brackets from the expression, if any
     expression = expression.replace(/\)/g, "");
     switch(calcOperator)
     {
-        case "+":displayScreen.textContent = add(bracketsFreeExpression);
+        case "+":displayScreen.textContent = add(expression);
             break;
         case "-" : displayScreen.textContent = subtract(expression);
             break; 
-        case "*" : displayScreen.textContent = multiply(bracketsFreeExpression);
+        case "*" : displayScreen.textContent = multiply(expression);
             break;
-        case "/" : displayScreen.textContent = divide(bracketsFreeExpression);
+        case "/" : displayScreen.textContent = divide(expression);
             break;
-        case "%" : displayScreen.textContent = modulo(bracketsFreeExpression);
+        case "%" : displayScreen.textContent = modulo(expression);
             break;
         default: displayScreen.textContent = "Invalid";
     }
@@ -316,3 +314,4 @@ clearButton.addEventListener("click", function(evt) {
 
 //handle not allowing * / + % together
 //rounding off problem
+//keyboard support
