@@ -5,8 +5,7 @@ let operandCount = 0;
 let pressedEquals = false;
 let canPressDot = true;
 let secondOperator = "";
-// const operatorRegex = /[+*-/%]/;
-const operatorRegex = /[+\-*\/%]/;
+const operatorRegex = /[+\-*\/%]/; //pro tip -> /[+-*\/%]/, - is interpreted as a range from + to *, so use \ esc sequence to say minus.
 const buttons = document.querySelectorAll("button");
 const numberButtons = document.querySelectorAll(".numbers");
 const operatorButtons = document.querySelectorAll(".operator");
@@ -30,7 +29,6 @@ function handleOperatorInput(operator) {
         return;
     }
     canPressDot = true;
-    // const operator = this.textContent;
     displayScreen.textContent += operator;
     if(operatorCount === 2) //try to call a seperate equals function or not maybe
     {
@@ -60,21 +58,11 @@ function add(expression)
 
 function subtract(expression)
 {
-    let operatorIndex = expression.indexOf('-');
-        if(operatorIndex != 0)
-        {
-            operandA = expression.slice(0, operatorIndex);
-            operandB = expression.slice(operatorIndex + 1, expression.length);
-            return (operandA - operandB);
-        }
-        // Negative number at the beginning of the expression
-        operandA = parseFloat(expression);
-        if(expression.slice(1).includes('-'))
-        {
-            operatorIndex = expression.lastIndexOf('-')
-            operandB = expression.slice(operatorIndex + 1, expression.length);
-            return (operandA - operandB);
-        } 
+        
+    operatorIndex = expression.lastIndexOf('-')
+    operandA = expression.slice(0, operatorIndex);
+    operandB = expression.slice(operatorIndex + 1, expression.length);
+    return (operandA - operandB);
 }
 
 function multiply(expression)
@@ -143,6 +131,7 @@ numberButtons.forEach(numButton => {
 
 signButton.addEventListener("click", () => {
     displayScreen.textContent += "(-)";
+    secondOperator = "-"; //for cases like 5(-)6 which isnt how +/- button is supposed to be used but gotta make it user-friendly yk (idiot friendly haha)
 })
 
 dotButton.addEventListener("click", function(evt)  {
@@ -222,5 +211,5 @@ clearButton.addEventListener("click", function(evt) {
 //handle not allowing * / + % together
 //rounding off problem
 //keyboard support
-//(-5)-(-5) = -10 hell nah fix it
+//(-5)-(-5) = -10 hell nah fix it..even 5*(-)5
 //fix . not appearing after del dot
