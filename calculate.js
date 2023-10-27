@@ -22,48 +22,6 @@ const signButton = document.querySelector(".sign");
 const displayScreen = document.querySelector(".calculator-display");
 displayScreen.textContent = "";
 
-function calculate(expression)
-{
-    if(expression.includes('+'))
-    {
-        return add(expression);
-    }
-    
-    if(expression.includes('-'))
-    {
-        let operatorIndex = expression.indexOf('-');
-        if(operatorIndex != 0)
-        {
-            operandA = expression.slice(0, operatorIndex);
-            operandB = expression.slice(operatorIndex + 1, expression.length);
-            return subtract(operandA, operandB);
-        }
-        // Negative number at the beginning of the expression
-        operandA = parseFloat(expression);
-        if(expression.slice(1).includes('-'))
-        {
-            operatorIndex = expression.lastIndexOf('-')
-            operandB = expression.slice(operatorIndex + 1, expression.length);
-            return subtract(operandA, operandB);
-        }  
-    }
-
-    if(expression.includes('*'))
-    {
-        return multiply(expression);
-    }
-
-    if(expression.includes('/'))
-    {
-        return divide(expression);
-    }
-
-    if(expression.includes('%'))
-    {
-        return modulo(expression);
-    }
-}
-
 function add(expression)
 {
     const operatorIndex = expression.indexOf('+')
