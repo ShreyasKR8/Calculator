@@ -93,7 +93,7 @@ function modulo(expression)
     return operandA % operandB;
 }
 
-function doCalculate(expression, calcOperator)
+function calculate(expression, calcOperator)
 {
     expression = (expression.replace(/\(/g, "")); //remove brackets from the expression, if any
     expression = expression.replace(/\)/g, "");
@@ -145,7 +145,7 @@ moduloButton.addEventListener("click", function(evt)  {
     if(operatorCount === 2) //try to call a seperate equals function or not maybe
     {
         let secOp = displayScreen.textContent.slice(-1); //store the last dangling operator the user entered
-        doCalculate(displayScreen.textContent.slice(0, -1), operator1); //remove the last dangling operator from expression
+        calculate(displayScreen.textContent.slice(0, -1), operator1); //remove the last dangling operator from expression
         displayScreen.textContent += secOp; //Add the dangling operator after evaluation
         operandCount = 1;
         operatorCount = 1;
@@ -165,7 +165,7 @@ divideButton.addEventListener("click", function(evt) {
     if(operatorCount === 2) //try to call a seperate equals function or not maybe
     {
         let secOp = displayScreen.textContent.slice(-1); //store the last dangling operator the user entered
-        doCalculate(displayScreen.textContent.slice(0, -1), operator1); //remove the last dangling operator from expression
+        calculate(displayScreen.textContent.slice(0, -1), operator1); //remove the last dangling operator from expression
         displayScreen.textContent += secOp; //Add the dangling operator after evaluation
         operandCount = 1;
         operatorCount = 1;
@@ -186,7 +186,7 @@ multiplyButton.addEventListener("click", function(evt) {
     if(operatorCount === 2) //try to call a seperate equals function or not maybe
     {
         let secOp = displayScreen.textContent.slice(-1); //store the last dangling operator the user entered
-        doCalculate(displayScreen.textContent.slice(0, -1), operator1); //remove the last dangling operator from expression
+        calculate(displayScreen.textContent.slice(0, -1), operator1); //remove the last dangling operator from expression
         displayScreen.textContent += secOp; //Add the dangling operator after evaluation
         operandCount = 1;
         operatorCount = 1;
@@ -207,7 +207,7 @@ subtractButton.addEventListener("click", function(evt) {
     if(operatorCount === 2) //try to call a seperate equals function or not maybe
     {
         let secOp = displayScreen.textContent.slice(-1); //store the last dangling operator the user entered
-        doCalculate(displayScreen.textContent.slice(0, -1), operator1); //remove the last dangling operator from expression
+        calculate(displayScreen.textContent.slice(0, -1), operator1); //remove the last dangling operator from expression
         displayScreen.textContent += secOp; //Add the dangling operator after evaluation
         operandCount = 1;
         operatorCount = 1;
@@ -217,7 +217,7 @@ subtractButton.addEventListener("click", function(evt) {
 
 addButton.addEventListener("click", function(evt) {
     operatorCount++;
-    if(displayScreen.textContent.length === 0)
+    if(displayScreen.textContent.length === 0 || operatorRegex.test(displayScreen.textContent.slice(-1)))
     {
         return;
     }
@@ -227,7 +227,7 @@ addButton.addEventListener("click", function(evt) {
     if(operatorCount === 2) //try to call a seperate equals function or not maybe
     {
         let secOp = displayScreen.textContent.slice(-1); //store the last dangling operator the user entered
-        doCalculate(displayScreen.textContent.slice(0, -1), operator1); //remove the last dangling operator from expression
+        calculate(displayScreen.textContent.slice(0, -1), operator1); //remove the last dangling operator from expression
         displayScreen.textContent += secOp; //Add the dangling operator after evaluation
         operandCount = 1;
         operatorCount = 1;
@@ -242,7 +242,7 @@ equalsButton.addEventListener("click", function(evt) {
     }
     canPressDot = true;
     let calcOperator = operator1;
-    doCalculate(displayScreen.textContent, calcOperator);
+    calculate(displayScreen.textContent, calcOperator);
 })
 
 delButton.addEventListener("click", function(evt) {
@@ -273,3 +273,4 @@ clearButton.addEventListener("click", function(evt) {
 //handle not allowing * / + % together
 //rounding off problem
 //keyboard support
+//(-5)-(-5) = -10 hell nah fix it
