@@ -4,7 +4,7 @@ let operatorCount = 0;
 let operandCount = 0;
 let pressedEquals = false;
 let canPressDot = true;
-let secondOperator = "";
+let previousOperator = "";
 const operatorRegex = /[+\-*\/%]/; //pro tip -> /[+-*\/%]/, - is interpreted as a range from + to *, so use \ esc sequence to say minus.
 const buttons = document.querySelectorAll("button");
 const numberButtons = document.querySelectorAll(".numbers");
@@ -23,21 +23,22 @@ const displayScreen = document.querySelector(".calculator-display");
 displayScreen.textContent = "";
 
 function handleOperatorInput(operator) {
-    operatorCount++;
     if(displayScreen.textContent.length === 0 || operatorRegex.test(displayScreen.textContent.slice(-1)))
     {
         return;
     }
+    operatorCount++;
     canPressDot = true;
     displayScreen.textContent += operator;
     if(operatorCount === 2) //try to call a seperate equals function or not maybe
     {
         let secOp = displayScreen.textContent.slice(-1); //store the last dangling operator the user entered
-        calculate(displayScreen.textContent.slice(0, -1), secondOperator); //remove the last dangling operator from expression
+        calculate(displayScreen.textContent.slice(0, -1), previousOperator); //slice to remove the second operator from chain expression
         displayScreen.textContent += secOp; //Add the dangling operator after evaluation
         operandCount = 1;
         operatorCount = 1;
     }
+    previousOperator = operator; //set current operator as prev to use it for chain expression like 6+6*
 }
 
 function add(expression)
@@ -131,7 +132,7 @@ numberButtons.forEach(numButton => {
 
 signButton.addEventListener("click", () => {
     displayScreen.textContent += "(-)";
-    secondOperator = "-"; //for cases like 5(-)6 which isnt how +/- button is supposed to be used but gotta make it user-friendly yk (idiot friendly haha)
+    previousOperator = "-"; //for cases like 5(-)6 which isnt how +/- button is supposed to be used but gotta make it user-friendly yk (idiot friendly haha)
 })
 
 dotButton.addEventListener("click", function(evt)  {
@@ -144,27 +145,22 @@ dotButton.addEventListener("click", function(evt)  {
 
 moduloButton.addEventListener("click", (evt) =>  {
     handleOperatorInput(evt.target.textContent);
-    secondOperator = "%";
 })
 
 divideButton.addEventListener("click", (evt) => {
     handleOperatorInput(evt.target.textContent);
-    secondOperator = "/";
 })
 
 multiplyButton.addEventListener("click", (evt) => {
     handleOperatorInput(evt.target.textContent);
-    secondOperator = "*";
 })
 
 subtractButton.addEventListener("click", (evt) => {
     handleOperatorInput(evt.target.textContent);
-    secondOperator = "-";
 })
 
 addButton.addEventListener("click", (evt) => {
     handleOperatorInput(evt.target.textContent);
-    secondOperator = "+";
 })
 
 equalsButton.addEventListener("click", () => {
@@ -173,9 +169,9 @@ equalsButton.addEventListener("click", () => {
         return;
     }
     canPressDot = true;
-    let calcOperator = secondOperator;
+    let calcOperator = previousOperator;
     calculate(displayScreen.textContent, calcOperator);
-    operandCount = 1;
+    operandCount = 1;   
     operatorCount = 0;
 })
 
