@@ -5,7 +5,8 @@ let operandCount = 0;
 let pressedEquals = false;
 let canPressDot = true;
 let previousOperator = "";
-const operatorRegex = /[+\-*\/%]/; //pro tip -> /[+-*\/%]/, - is interpreted as a range from + to *, so use \ esc sequence to say minus.
+const operatorRegex = /[+\-*\/%]/; /* pro tip -> /[+-*\/%]/, - is interpreted as a range from + to *,
+ so use \ esc sequence to say minus. */
 const buttons = document.querySelectorAll("button");
 const numberButtons = document.querySelectorAll(".numbers");
 const operatorButtons = document.querySelectorAll(".operator");
@@ -22,7 +23,12 @@ const signButton = document.querySelector(".sign");
 const displayScreen = document.querySelector(".calculator-display");
 displayScreen.textContent = "";
 
-function handleDot() {
+function handleNumberInput(number) {
+    displayScreen.textContent += number;
+    operandCount++;
+}
+
+function handleDotInput() {
     if (canPressDot) // Not allowing two dots in one number
     {
         displayScreen.textContent += ".";
@@ -30,9 +36,10 @@ function handleDot() {
     }
 }
 
-function handleSigns() {
+function handleSignsInput() {
     displayScreen.textContent += "(-)";
-    previousOperator = "-";//for cases like 5(-)6 which isnt how +/- button is supposed to be used but gotta make it user-friendly yk (idiot friendly haha)
+    previousOperator = "-"; /*for cases like 5(-)6 which isnt how +/- button is 
+    supposed to be used but gotta make it user-friendly yk (idiot friendly haha) */
 }
 
 function handleOperatorInput(operator) {
@@ -46,7 +53,8 @@ function handleOperatorInput(operator) {
     if(operatorCount === 2) //try to call a seperate equals function or not maybe
     {
         let secOp = displayScreen.textContent.slice(-1); //store the last dangling operator the user entered
-        calculate(displayScreen.textContent.slice(0, -1), previousOperator); //slice to remove the second operator from chain expression
+        calculate(displayScreen.textContent.slice(0, -1), previousOperator); /*slice to remove the second 
+        operator from chain expression */
         displayScreen.textContent += secOp; //Add the dangling operator after evaluation
         operandCount = 1;
         operatorCount = 1;
@@ -91,14 +99,11 @@ function divide(expression)
     const operatorIndex = expression.indexOf('/')
     operandA = expression.slice(0, operatorIndex);
     operandB = expression.slice(operatorIndex+ 1, expression.length);
-    if(operandA === "0")
-        return "0, I mean its alright"
     if(operandB === "0")
     {
-        return "dude seriously??";
-        
+        return "dude seriously??";   
     }
-    let result = operandA/operandB;
+    let result = operandA / operandB;
     if(result % 1 !== 0) // checks if a number has decimal places
         return result.toFixed(3);
     return result;
@@ -134,8 +139,47 @@ function calculate(expression, calcOperator)
         case "%" : displayScreen.textContent = modulo(expression);
             break;
         default: displayScreen.textContent = "Invalid";
-        }
     }
+}
+
+function handleEquals() {
+    if(displayScreen.textContent.length === 0  )
+    {
+        return;
+    }
+    canPressDot = true;
+    let calcOperator = previousOperator;
+    calculate(displayScreen.textContent, calcOperator);
+    operandCount = 1;   
+    operatorCount = 0;
+    operandA = 0;
+    operandB = 0;
+}
+
+function handleDelete() {
+    let deletedItem = displayScreen.textContent.slice(-1);
+    if (deletedItem === ".") {
+        canPressDot = true; // if the deleted element is dot, set canPressDot to true
+    }
+    /* if the deleted is an operator and canPressDot was set to true by any operator's
+    event listeners then- (there could be a better soln though) */
+    if (canPressDot && operatorRegex.test(deletedItem)) {
+        canPressDot = false;
+    }
+    if (operatorRegex.test(deletedItem)) {
+        operatorCount--;
+    }
+    displayScreen.textContent = displayScreen.textContent.slice(0, -1);
+}
+
+function handleClear() {
+    displayScreen.textContent = "";
+    canPressDot = true;
+    operatorCount = 0;
+    operandCount = 0;
+    operandA = 0;
+    operandB = 0;
+}
 
 numberButtons.forEach(numButton => {
     numButton.addEventListener("click", (evt) => {
@@ -143,9 +187,9 @@ numberButtons.forEach(numButton => {
     })
 })
 
-signButton.addEventListener("click", () => handleSigns())
+signButton.addEventListener("click", () => handleSignsInput())
 
-dotButton.addEventListener("click", () => handleDot())
+dotButton.addEventListener("click", () => handleDotInput())
 
 moduloButton.addEventListener("click", (evt) =>  {
     handleOperatorInput(evt.target.textContent);
@@ -167,52 +211,8 @@ addButton.addEventListener("click", (evt) => {
     handleOperatorInput(evt.target.textContent);
 })
 
-equalsButton.addEventListener("click", () => {
-    if(displayScreen.textContent.length === 0  )
-    {
-        return;
-    }
-    canPressDot = true;
-    let calcOperator = previousOperator;
-    calculate(displayScreen.textContent, calcOperator);
-    operandCount = 1;   
-    operatorCount = 0;
-    operandA = 0;
-    operandB = 0;
-})
+equalsButton.addEventListener("click", () => handleEquals())
 
-delButton.addEventListener("click", function(evt) {
-    let deletedItem = displayScreen.textContent.slice(-1);
-    if(!canPressDot && deletedItem === ".") 
-    {
-        canPressDot = true; // if the deleted element is dot, set canPressDot to true
-    }
-    console.log(deletedItem)
-    console.log(canPressDot);
-    console.log(operatorRegex);
-    console.log(operatorRegex.test(deletedItem))
-    // if the deleted is an operator and canPressDot was set to true by any operator's event listeners then-there could be a better soln though
-    if(canPressDot && operatorRegex.test(deletedItem)) 
-    {   
-        canPressDot = false; 
-    }
-    if(operatorRegex.test(deletedItem))
-    {
-        operatorCount--;
-    }
-    displayScreen.textContent = displayScreen.textContent.slice(0, -1);
-})
+delButton.addEventListener("click", () => handleDelete())
 
-clearButton.addEventListener("click", function(evt) {
-    displayScreen.textContent = "";
-    canPressDot = true;
-    operatorCount = 0;
-    operandCount = 0;
-    operandA = 0;
-    operandB = 0;
-})
-
-function handleNumberInput(number) {
-    displayScreen.textContent += number;
-    operandCount++;
-}
+clearButton.addEventListener("click", () => handleClear())
