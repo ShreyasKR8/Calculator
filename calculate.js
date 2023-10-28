@@ -22,6 +22,19 @@ const signButton = document.querySelector(".sign");
 const displayScreen = document.querySelector(".calculator-display");
 displayScreen.textContent = "";
 
+function handleDot() {
+    if (canPressDot) // Not allowing two dots in one number
+    {
+        displayScreen.textContent += ".";
+        canPressDot = false;
+    }
+}
+
+function handleSigns() {
+    displayScreen.textContent += "(-)";
+    previousOperator = "-";//for cases like 5(-)6 which isnt how +/- button is supposed to be used but gotta make it user-friendly yk (idiot friendly haha)
+}
+
 function handleOperatorInput(operator) {
     if(displayScreen.textContent.length === 0 || operatorRegex.test(displayScreen.textContent.slice(-1)))
     {
@@ -59,7 +72,6 @@ function add(expression)
 
 function subtract(expression)
 {
-        
     operatorIndex = expression.lastIndexOf('-')
     operandA = expression.slice(0, operatorIndex);
     operandB = expression.slice(operatorIndex + 1, expression.length);
@@ -86,7 +98,10 @@ function divide(expression)
         return "dude seriously??";
         
     }
-    return (operandA / operandB);
+    let result = operandA/operandB;
+    if(result % 1 !== 0) // checks if a number has decimal places
+        return result.toFixed(3);
+    return result;
 }
 
 function modulo(expression)
@@ -114,34 +129,23 @@ function calculate(expression, calcOperator)
             break; 
         case "*" : displayScreen.textContent = multiply(expression);
             break;
-        case "/" : displayScreen.textContent = divide(expression);
+        case "/" : displayScreen.textContent = divide(expression)
             break;
         case "%" : displayScreen.textContent = modulo(expression);
             break;
-            default: displayScreen.textContent = "Invalid";
+        default: displayScreen.textContent = "Invalid";
         }
     }
 
 numberButtons.forEach(numButton => {
-    numButton.addEventListener("click", function(evt)  {
-        const number = this.textContent;
-        displayScreen.textContent += number;
-        operandCount++;
+    numButton.addEventListener("click", (evt) => {
+        handleNumberInput(evt.target.textContent);
     })
 })
 
-signButton.addEventListener("click", () => {
-    displayScreen.textContent += "(-)";
-    previousOperator = "-"; //for cases like 5(-)6 which isnt how +/- button is supposed to be used but gotta make it user-friendly yk (idiot friendly haha)
-})
+signButton.addEventListener("click", () => handleSigns())
 
-dotButton.addEventListener("click", function(evt)  {
-    if(canPressDot) // Not allowing two dots in one number
-    {
-        displayScreen.textContent += ".";
-        canPressDot = false; //cannot press dot until an it's a new number
-    }
-})
+dotButton.addEventListener("click", () => handleDot())
 
 moduloButton.addEventListener("click", (evt) =>  {
     handleOperatorInput(evt.target.textContent);
@@ -164,7 +168,7 @@ addButton.addEventListener("click", (evt) => {
 })
 
 equalsButton.addEventListener("click", () => {
-    if(displayScreen.textContent.length === 0)
+    if(displayScreen.textContent.length === 0  )
     {
         return;
     }
@@ -173,6 +177,8 @@ equalsButton.addEventListener("click", () => {
     calculate(displayScreen.textContent, calcOperator);
     operandCount = 1;   
     operatorCount = 0;
+    operandA = 0;
+    operandB = 0;
 })
 
 delButton.addEventListener("click", function(evt) {
@@ -202,10 +208,11 @@ clearButton.addEventListener("click", function(evt) {
     canPressDot = true;
     operatorCount = 0;
     operandCount = 0;
+    operandA = 0;
+    operandB = 0;
 })
 
-//handle not allowing * / + % together
-//rounding off problem
-//keyboard support
-//(-5)-(-5) = -10 hell nah fix it..even 5*(-)5
-//fix . not appearing after del dot
+function handleNumberInput(number) {
+    displayScreen.textContent += number;
+    operandCount++;
+}
