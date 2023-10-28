@@ -7,7 +7,6 @@ let canPressDot = true;
 let previousOperator = "";
 const operatorRegex = /[+\-*\/%]/; /* pro tip -> /[+-*\/%]/, - is interpreted as a range from + to *,
  so use \ esc sequence to say minus. */
-const buttons = document.querySelectorAll("button");
 const numberButtons = document.querySelectorAll(".numbers");
 const operatorButtons = document.querySelectorAll(".operator");
 const moduloButton = document.querySelector(".modulus");
@@ -143,7 +142,7 @@ function calculate(expression, calcOperator)
 }
 
 function handleEquals() {
-    if(displayScreen.textContent.length === 0  )
+    if(displayScreen.textContent.length === 0  || operandCount === 1)
     {
         return;
     }
@@ -191,25 +190,9 @@ signButton.addEventListener("click", () => handleSignsInput())
 
 dotButton.addEventListener("click", () => handleDotInput())
 
-moduloButton.addEventListener("click", (evt) =>  {
-    handleOperatorInput(evt.target.textContent);
-})
-
-divideButton.addEventListener("click", (evt) => {
-    handleOperatorInput(evt.target.textContent);
-})
-
-multiplyButton.addEventListener("click", (evt) => {
-    handleOperatorInput(evt.target.textContent);
-})
-
-subtractButton.addEventListener("click", (evt) => {
-    handleOperatorInput(evt.target.textContent);
-})
-
-addButton.addEventListener("click", (evt) => {
-    handleOperatorInput(evt.target.textContent);
-})
+operatorButtons.forEach(opButton => opButton.addEventListener("click", (evt) => {
+    handleOperatorInput(evt.target.textContent)
+}))
 
 equalsButton.addEventListener("click", () => handleEquals())
 
