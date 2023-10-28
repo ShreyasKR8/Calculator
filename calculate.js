@@ -5,8 +5,8 @@ let operandCount = 0;
 let pressedEquals = false;
 let canPressDot = true;
 let previousOperator = "";
-const operatorRegex = /[+\-*\/%]/; /* pro tip -> /[+-*\/%]/, - is interpreted as a range from + to *,
- so use \ esc sequence to say minus. */
+const operatorRegex = /[+\-*\/%]/; /* pro tip -> /[+-*\/%]/, - is interpreted 
+as a range from + to *, so use \ esc sequence to say minus. */
 const numberButtons = document.querySelectorAll(".numbers");
 const operatorButtons = document.querySelectorAll(".operator");
 const moduloButton = document.querySelector(".modulus");
@@ -37,8 +37,8 @@ function handleDotInput() {
 
 function handleSignsInput() {
     displayScreen.textContent += "(-)";
-    previousOperator = "-"; /*for cases like 5(-)6 which isnt how +/- button is 
-    supposed to be used but gotta make it user-friendly yk (idiot friendly haha) */
+    //previousOperator = "-"; /*for cases like 5(-)6 which isnt how +/- button is 
+    //supposed to be used but gotta make it user-friendly yk (idiot friendly haha) */
 }
 
 function handleOperatorInput(operator) {
@@ -51,10 +51,11 @@ function handleOperatorInput(operator) {
     displayScreen.textContent += operator;
     if(operatorCount === 2) //try to call a seperate equals function or not maybe
     {
-        let secOp = displayScreen.textContent.slice(-1); //store the last dangling operator the user entered
+        //store the last dangling operator the user entered
+        let secondOperator = displayScreen.textContent.slice(-1);
         calculate(displayScreen.textContent.slice(0, -1), previousOperator); /*slice to remove the second 
         operator from chain expression */
-        displayScreen.textContent += secOp; //Add the dangling operator after evaluation
+        displayScreen.textContent += secondOperator; //Add the dangling operator after evaluation
         operandCount = 1;
         operatorCount = 1;
     }
