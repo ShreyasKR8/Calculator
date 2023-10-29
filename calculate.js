@@ -83,6 +83,8 @@ function subtract(expression)
     operatorIndex = expression.lastIndexOf('-')
     operandA = expression.slice(0, operatorIndex);
     operandB = expression.slice(operatorIndex + 1, expression.length);
+    if(operandA.slice(-1) === "-") //in the case of (-)x-(-)y, operandA will be -x- so
+        operandA = operandA.slice(0, -1);
     return (operandA - operandB);
 }
 
