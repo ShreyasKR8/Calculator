@@ -184,30 +184,6 @@ function handleClear() {
     operandB = 0;
 }
 
-numberButtons.forEach(numButton => {
-    numButton.addEventListener("click", (evt) => {
-        handleNumberInput(evt.target.textContent);
-    })
-})
-
-signButton.addEventListener("click", () => handleSignsInput())
-
-dotButton.addEventListener("click", () => handleDotInput())
-
-operatorButtons.forEach(opButton => {
-    opButton.addEventListener("click", (evt) => {
-        handleOperatorInput(evt.target.textContent)
-    })
-})
-
-equalsButton.addEventListener("click", () => handleEquals())
-
-delButton.addEventListener("click", () => handleDelete())
-
-clearButton.addEventListener("click", () => handleClear())
-
-window.addEventListener('keydown', (event) => handleKeyboardInputs(event))
-
 function handleKeyboardInputs(event) {
     if (event.key === "Enter") { 
         handleEquals(); 
@@ -231,3 +207,27 @@ function handleKeyboardInputs(event) {
         handleClear() ;
     }
 }
+
+numberButtons.forEach(numButton => {
+    numButton.addEventListener("click", (evt) => {
+        handleNumberInput(evt.target.textContent);
+    })
+})
+
+signButton.addEventListener("click", () => handleSignsInput())
+
+dotButton.addEventListener("click", () => handleDotInput())
+
+operatorButtons.forEach(opButton => {
+    opButton.addEventListener("click", (evt) => {
+        handleOperatorInput(evt.target.textContent)
+    })
+})
+
+equalsButton.addEventListener("click", () => handleEquals())
+
+delButton.addEventListener("click", () => handleDelete())
+
+clearButton.addEventListener("click", () => handleClear())
+
+window.addEventListener('keydown', (event) => handleKeyboardInputs(event))
