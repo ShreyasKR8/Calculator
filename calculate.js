@@ -7,6 +7,7 @@ let canPressDot = true;
 let previousOperator = "";
 const operatorRegex = /[+\-*\/%]/; /* pro tip -> /[+-*\/%]/, - is interpreted 
 as a range from + to *, so use \ esc sequence to say minus. */
+const buttons = document.querySelector(".calculator-body")
 const numberButtons = document.querySelectorAll(".numbers");
 const operatorButtons = document.querySelectorAll(".operator");
 const moduloButton = document.querySelector(".modulus");
@@ -193,12 +194,40 @@ signButton.addEventListener("click", () => handleSignsInput())
 
 dotButton.addEventListener("click", () => handleDotInput())
 
-operatorButtons.forEach(opButton => opButton.addEventListener("click", (evt) => {
-    handleOperatorInput(evt.target.textContent)
-}))
+operatorButtons.forEach(opButton => {
+    opButton.addEventListener("click", (evt) => {
+        handleOperatorInput(evt.target.textContent)
+    })
+})
 
 equalsButton.addEventListener("click", () => handleEquals())
 
 delButton.addEventListener("click", () => handleDelete())
 
 clearButton.addEventListener("click", () => handleClear())
+
+window.addEventListener('keydown', (event) => handleKeyboardInputs(event))
+
+function handleKeyboardInputs(event) {
+    if (event.key === "Enter") { 
+        handleEquals(); 
+    }
+    else if (/^[0-9]$/.test(event.key)) {
+        handleNumberInput(event.key) ;
+    }
+    else if (event.key === "-" && event.shiftKey === true) {
+        handleSignsInput();
+    }
+    else if (operatorRegex.test(event.key)) {
+        handleOperatorInput(event.key);
+    }
+    else if (event.key === ".") {
+        handleDotInput();
+    }
+    else if (event.key === "Backspace") {
+        handleDelete();
+    }
+    else if (event.key === "End") {
+        handleClear() ;
+    }
+}
