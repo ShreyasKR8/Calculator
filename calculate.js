@@ -171,6 +171,7 @@ function handleDelete() {
     }
     if (operatorRegex.test(deletedItem)) {
         operatorCount--;
+        previousOperator = "";
     }
     displayScreen.textContent = displayScreen.textContent.slice(0, -1);
 }
@@ -182,6 +183,7 @@ function handleClear() {
     operandCount = 0;
     operandA = 0;
     operandB = 0;
+    previousOperator = "";
 }
 
 function handleKeyboardInputs(event) {
