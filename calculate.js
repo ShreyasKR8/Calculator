@@ -10,11 +10,6 @@ as a range from + to *, so use \ esc sequence to say minus. */
 const buttons = document.querySelector(".calculator-body")
 const numberButtons = document.querySelectorAll(".numbers");
 const operatorButtons = document.querySelectorAll(".operator");
-const moduloButton = document.querySelector(".modulus");
-const divideButton = document.querySelector(".division");
-const multiplyButton = document.querySelector(".product");
-const subtractButton = document.querySelector(".subtraction");
-const addButton = document.querySelector(".addition");
 const equalsButton = document.querySelector(".equals");
 const dotButton = document.querySelector(".dot");
 const delButton = document.querySelector(".del");
