@@ -206,6 +206,7 @@ function handleKeyboardInputs(event) {
     else if (event.key === "End") {
         handleClear() ;
     }
+    event.preventDefault();
 }
 
 numberButtons.forEach(numButton => {
