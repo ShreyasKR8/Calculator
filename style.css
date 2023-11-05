@@ -54,6 +54,7 @@ button {
     font-size: 15px;
     cursor: pointer;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    /* transition: transform 900ms; */
 }
 
 .front {
@@ -61,13 +62,15 @@ button {
     transform: translateY(-4px);
     padding: 15px;
     border-radius: 10%;
-    background-color: #BDCD5A;
+    /* background-color: #BDCD5A; */
+    background-color: #abb663;
     will-change: transform;
-    transition: transform 100ms;
+    transition: transform 200ms;
 }
 
 button:hover .front{
     transform: translateY(-5px);
+    filter: brightness(110%);
 }
 
 button:active .front{
