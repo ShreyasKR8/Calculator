@@ -49,7 +49,7 @@ header {
 button {
     margin: 3px;
     padding: 15px;
-    border: 1px solid black;
+    border: none;
     background-color: white;
     border-radius: 10%;
     font-size: 16px;
@@ -60,6 +60,6 @@ button {
 
 button:active {
     box-shadow: none;
-    transform: translateY(4px);
+    transform: translateY(3px);
     background-color: #BDCD5A;
 }
