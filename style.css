@@ -20,7 +20,7 @@ header {
     display: flex;
     flex-direction: column;
     padding: 5px;
-    margin-left: 39%;
+    margin-left: 41%;
     background-color: slateblue;
 
 }
@@ -35,8 +35,7 @@ header {
     font-size: 28px;
     border: 3px solid black;
     text-align: right;
-    background-color:  #5dff00;
-
+    background-color:  #06B515;
 }
 
 .buttons-section {
@@ -47,19 +46,32 @@ header {
 }
 
 button {
-    margin: 3px;
-    padding: 15px;
+    margin: 6px;
+    padding: 0;
     border: none;
-    background-color: white;
+    background-color: #545e17;
     border-radius: 10%;
-    font-size: 16px;
+    font-size: 15px;
     cursor: pointer;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.front {
+    display: block;
+    transform: translateY(-4px);
+    padding: 15px;
+    border-radius: 10%;
+    background-color: #BDCD5A;
+    will-change: transform;
     transition: transform 100ms;
 }
 
-button:active {
-    box-shadow: none;
-    transform: translateY(3px);
+button:hover .front{
+    transform: translateY(-5px);
+}
+
+button:active .front{
+    /* box-shadow: none; */
+    transform: translateY(0.5px);
     background-color: #BDCD5A;
 }
