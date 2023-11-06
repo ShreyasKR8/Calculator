@@ -79,3 +79,8 @@ button:active .front{
     transform: translateY(0.5px);
     background-color: #BDCD5A;
 }
+
+.active .front{
+    transform: translateY(0.5px);
+    background-color: #BDCD5A;
+}
