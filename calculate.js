@@ -228,4 +228,22 @@ delButton.addEventListener("click", () => handleDelete())
 
 clearButton.addEventListener("click", () => handleClear())
 
-window.addEventListener('keydown', (event) => handleKeyboardInputs(event))
+window.addEventListener('keydown', (event) => {
+    handleKeyboardInputs(event);
+    addTransition(event);
+})
+window.addEventListener('keyup', (event) => {
+    removeTransition(event);
+})
+
+function addTransition(event)
+{
+    const button = document.querySelector(`.numbers[data-key="${event.key}"]`);
+    button.classList.add("active");
+}
+
+function removeTransition(event)
+{
+    const button = document.querySelector(`.numbers[data-key="${event.key}"]`);
+    button.classList.remove("active");
+}
