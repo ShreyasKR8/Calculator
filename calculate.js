@@ -232,18 +232,21 @@ window.addEventListener('keydown', (event) => {
     handleKeyboardInputs(event);
     addTransition(event);
 })
+
 window.addEventListener('keyup', (event) => {
     removeTransition(event);
 })
 
 function addTransition(event)
 {
-    const button = document.querySelector(`.numbers[data-key="${event.key}"]`);
+    const button = document.querySelector(`button[data-key="${event.key}"]`);
+    if(!button){console.log("button not valid"); return;}
     button.classList.add("active");
 }
 
 function removeTransition(event)
 {
-    const button = document.querySelector(`.numbers[data-key="${event.key}"]`);
+    const button = document.querySelector(`button[data-key="${event.key}"]`);
+    if(!button){console.log("button not valid"); return;}
     button.classList.remove("active");
 }
