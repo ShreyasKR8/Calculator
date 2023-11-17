@@ -188,7 +188,7 @@ function handleKeyboardInputs(event) {
     else if (/^[0-9]$/.test(event.key)) {
         handleNumberInput(event.key) ;
     }
-    else if (event.key === "-" && event.shiftKey === true) {
+    else if (event.key === "_") {
         handleSignsInput();
     }
     else if (operatorRegex.test(event.key)) {
@@ -200,7 +200,7 @@ function handleKeyboardInputs(event) {
     else if (event.key === "Backspace") {
         handleDelete();
     }
-    else if (event.key === "End") {
+    else if (event.key === "Delete") {
         handleClear() ;
     }
     event.preventDefault();
@@ -239,14 +239,20 @@ window.addEventListener('keyup', (event) => {
 
 function addTransition(event)
 {
-    const button = document.querySelector(`button[data-key="${event.key}"]`);
-    if(!button){console.log("button not valid"); return;}
+    let button = document.querySelector(`button[data-key="${event.key}"]`);
+    if(!button) 
+    {
+        return;
+    }
     button.classList.add("active");
 }
 
 function removeTransition(event)
 {
     const button = document.querySelector(`button[data-key="${event.key}"]`);
-    if(!button){console.log("button not valid"); return;}
+    if(!button)
+    { 
+        return;
+    }
     button.classList.remove("active");
 }
