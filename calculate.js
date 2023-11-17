@@ -2,12 +2,10 @@ let operandA = 0;
 let operandB = 0;
 let operatorCount = 0;
 let operandCount = 0;
-let pressedEquals = false;
 let canPressDot = true;
 let previousOperator = "";
 const operatorRegex = /[+\-*\/%]/; /* pro tip -> /[+-*\/%]/, - is interpreted 
 as a range from + to *, so use \ esc sequence to say minus. */
-const buttons = document.querySelector(".calculator-body")
 const numberButtons = document.querySelectorAll(".numbers");
 const operatorButtons = document.querySelectorAll(".operator");
 const equalsButton = document.querySelector(".equals");
@@ -17,6 +15,37 @@ const clearButton = document.querySelector(".clear");
 const signButton = document.querySelector(".sign");
 const displayScreen = document.querySelector(".calculator-display");
 displayScreen.textContent = "";
+
+function addTransition(event)
+{
+    let button = document.querySelector(`button[data-key="${event.key}"]`);
+    if(!button) 
+    {
+        return;
+    }
+    button.classList.add("active");
+}
+
+function removeTransition(event)
+{
+    const button = document.querySelector(`button[data-key="${event.key}"]`);
+    if(!button)
+    { 
+        return;
+    }
+    button.classList.remove("active");
+}
+
+function playSound()
+{
+    const audio = document.querySelector("audio");
+    if(!audio)
+    {
+        return;
+    }
+    audio.currentTime = 0;
+    audio.play();
+}
 
 function handleNumberInput(number) {
     displayScreen.textContent += number;
@@ -209,50 +238,52 @@ function handleKeyboardInputs(event) {
 numberButtons.forEach(numButton => {
     numButton.addEventListener("click", (evt) => {
         handleNumberInput(evt.target.textContent);
+        playSound();
     })
 })
 
-signButton.addEventListener("click", () => handleSignsInput())
+signButton.addEventListener("click", () => {
+    handleSignsInput();
+    playSound();
+})
 
-dotButton.addEventListener("click", () => handleDotInput())
+dotButton.addEventListener("click", () => {
+    handleDotInput()
+    playSound();
+})
 
 operatorButtons.forEach(opButton => {
     opButton.addEventListener("click", (evt) => {
-        handleOperatorInput(evt.target.textContent)
+        handleOperatorInput(evt.target.textContent);
+        playSound();
     })
 })
 
-equalsButton.addEventListener("click", () => handleEquals())
+equalsButton.addEventListener("click", () => {
+    handleEquals();
+    playSound();
+})
 
-delButton.addEventListener("click", () => handleDelete())
+delButton.addEventListener("click", () => {
+    handleDelete();
+    playSound();
+})
 
-clearButton.addEventListener("click", () => handleClear())
+clearButton.addEventListener("click", () => {
+    handleClear();
+    playSound();
+})
 
 window.addEventListener('keydown', (event) => {
     handleKeyboardInputs(event);
     addTransition(event);
+    const button = document.querySelector(`button[data-key="${event.key}"]`);
+
+    if (button) { //Doesn't play sound if the key is a letter or irrelevant to calculator
+        playSound();
+    }
 })
 
 window.addEventListener('keyup', (event) => {
     removeTransition(event);
 })
-
-function addTransition(event)
-{
-    let button = document.querySelector(`button[data-key="${event.key}"]`);
-    if(!button) 
-    {
-        return;
-    }
-    button.classList.add("active");
-}
-
-function removeTransition(event)
-{
-    const button = document.querySelector(`button[data-key="${event.key}"]`);
-    if(!button)
-    { 
-        return;
-    }
-    button.classList.remove("active");
-}
