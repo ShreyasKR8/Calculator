@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'Digital-7';
+    src: url('fonts/digital-7.ttf'), format('ttf');
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -32,7 +37,8 @@ header {
     width: 250px;
     margin: 5px;
     padding: 12px;
-    font-size: 28px;
+    font-family: 'Digital-7', sans-serif;
+    font-size: 36px;
     border: 3px solid black;
     text-align: right;
     background-color:  #06B515;
