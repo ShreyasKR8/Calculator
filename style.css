@@ -24,7 +24,7 @@ header {
     padding: 5px;
     margin: auto;
     background-color: slateblue;
-
+    box-shadow: 2px 2px 2px grey;
 }
 
 .calculator-display {
@@ -75,12 +75,28 @@ button:hover .front{
     filter: brightness(110%);
 }
 
-button:active .front{
+button:active .front {
     transform: translateY(0.5px);
     background-color: #BDCD5A;
 }
 
-.active .front{
+.active .front {
     transform: translateY(0.5px);
     background-color: #BDCD5A;
+}
+
+.equals:hover .front {
+    background-color: #B0D42B;
+}
+
+.operator:hover .front {
+    background-color: #84CD5A;
+}
+
+.clear:hover .front {
+    background-color: rgb(182, 75, 75);
+}
+
+.del:hover .front {
+    background-color: rgb(218, 107, 107);
 }
