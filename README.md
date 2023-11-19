@@ -4,6 +4,7 @@ This is a simple calculator implemented in JavaScript, HTML, and CSS for [The Od
 
 ## Overview
 <a href="https://shreyaskr8.github.io/Calculator/">Demo</a>
+
 ![screenshot](https://github.com/ShreyasKR8/Calculator/blob/main/images/Screenshot%20Calc.png)
 
 ## Features
@@ -36,7 +37,10 @@ This is a simple calculator implemented in JavaScript, HTML, and CSS for [The Od
 
 1. Clone the repository.
 2. Open `index.html` in a web browser.
-3. 
+3. For Keyboard input-
+   - Use Delete key to Clear All
+   - Use Backspace to delete
+   - Use Shift > - for signs
 
 ## Acknowledgments
 
