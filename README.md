@@ -3,6 +3,7 @@
 This is a simple calculator implemented in JavaScript, HTML, and CSS for [The Odin Project Calculator project](https://www.theodinproject.com/lessons/foundations-calculator). It provides basic arithmetic operations such as addition, subtraction, multiplication, division and modulo.
 
 ## Overview
+<a href="https://shreyaskr8.github.io/Calculator/">Demo</a>
 ![screenshot](https://github.com/ShreyasKR8/Calculator/blob/main/images/Screenshot%20Calc.png)
 
 ## Features
