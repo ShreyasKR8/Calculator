@@ -20,13 +20,13 @@ This is a simple calculator implemented in JavaScript, HTML, and CSS for [The Od
 ### Calculator Operation
 
 - Three variables for each part of a calculator operation: the first number, the operator, and the second number.
-- 
+
 ### Notes
 
 - Users can string together multiple operations for complex calculations.
 - The calculator evaluates one pair of numbers at a time.
 - A snarky error message is displayed if the user attempts to divide by 0.
-- 
+  
 ### Extra Credit Features
 
 - Floating-point numbers can be input using the decimal button.
@@ -40,7 +40,7 @@ This is a simple calculator implemented in JavaScript, HTML, and CSS for [The Od
 3. For Keyboard input-
    - Use Delete key to Clear All
    - Use Backspace to delete
-   - Use Shift > - for signs
+   - Press Shift -> - for signs
 
 ## Acknowledgments
 
