@@ -62,8 +62,6 @@ function handleDotInput() {
 
 function handleSignsInput() {
     displayScreen.textContent += "(-)";
-    //previousOperator = "-"; /*for cases like 5(-)6 which isnt how +/- button is 
-    //supposed to be used but gotta make it user-friendly yk (idiot friendly haha) */
 }
 
 function handleOperatorInput(operator) {
@@ -105,7 +103,9 @@ function add(expression)
 
 function subtract(expression)
 {
-    operatorIndex = expression.lastIndexOf('-')
+    let operatorIndex = expression.lastIndexOf('-');
+    if(expression[operatorIndex - 1] === '-') //in the case of x -(-)y
+        operatorIndex -= 1;
     operandA = expression.slice(0, operatorIndex);
     operandB = expression.slice(operatorIndex + 1, expression.length);
     if(operandA.slice(-1) === "-") //in the case of (-)x-(-)y, operandA will be -x- so
